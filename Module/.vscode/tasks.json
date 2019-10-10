@@ -1,0 +1,59 @@
+{
+    "version": "2.0.0",
+
+    "windows": {
+        "options": {
+            "shell": {
+                "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+                "args": [ "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command" ]
+            }
+        }
+    },
+    "linux": {
+        "options": {
+            "shell": {
+                "executable": "pwsh",
+                "args": [ "-NoProfile", "-Command" ]
+            }
+        }
+    },
+    "osx": {
+        "options": {
+            "shell": {
+                "executable": "/usr/local/bin/pwsh",
+                "args": [ "-NoProfile", "-Command" ]
+            }
+        }
+    },
+
+    "tasks": [
+        {
+            "label": "Test",
+            "type": "shell",
+            "command": "Invoke-Build -Task InstallDependencies, Analyze, ImportModule, Test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "Invoke-Build -Task InstallDependencies, Analyze, ImportModule, Test, UpdateBuildVersion, Archive",
+            "problemMatcher": []
+        },
+        {
+            "label": "BuildClean",
+            "type": "shell",
+            "command": "Invoke-Build -Task InstallDependencies, Analyze, ImportModule, Test, UpdateBuildVersion, Clean, Archive",
+            "problemMatcher": []
+        },
+        {
+            "label": "BuildAll",
+            "type": "shell",
+            "command": "Invoke-Build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}

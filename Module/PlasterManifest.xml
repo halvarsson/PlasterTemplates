@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plasterManifest
+  schemaVersion="1.1"
+  templateType="Project" xmlns="http://www.microsoft.com/schemas/PowerShell/Plaster/v1">
+  <metadata>
+    <name>ModuleTemplate</name>
+    <id>3edd6475-d0ce-44b3-bba9-ee01307e6970</id>
+    <version>0.1.0</version>
+    <title>New PowerShell module</title>
+    <description>Scaffolds the files required for a PowerShell module</description>
+    <author>Halvarsson</author>
+    <tags>PowerShell, Module, ModuleManifest</tags>
+  </metadata>
+  <parameters>
+    <parameter name='ModuleName' type='text' prompt='Name of the module' />
+    <parameter name='ModuleDesc' type='text' prompt='Description of the module.' />
+    <parameter name='Classes' type='choice' default='0' store='text' prompt='Will this module use classes?'>
+       <choice label='&amp;Yes.'
+           help='Classes folder will be created.'
+           value='Yes'/>
+       <choice label='&amp;No.'
+           help='Only Private/Public folder will be created.'
+           value='No'/>
+    </parameter>
+  </parameters>
+  <content>
+    <templateFile source='Tests\Help.Tests.ps1'
+       destination='Tests\Help.Tests.ps1'
+       />
+    <templateFile source='Tests\Module.Tests.ps1'
+       destination='Tests\Module.Tests.ps1'
+       />
+    <file source='ScriptAnalyzerSettings.psd1'
+       destination='ScriptAnalyzerSettings.psd1'
+       />
+    <templateFile source='template.build.ps1'
+       destination='${PLASTER_PARAM_ModuleName}.build.ps1'
+       />
+    <file source='.vscode\settings.json'
+      destination='.vscode\settings.json'
+      />
+    <file source='.vscode\tasks.json'
+      destination='.vscode\tasks.json'
+      />
+    <file source=''
+      destination='${PLASTER_PARAM_ModuleName}\Classes'
+      condition='${PLASTER_PARAM_Classes} -eq "Yes"'
+      />
+     <file source=''
+      destination='${PLASTER_PARAM_ModuleName}\Public'
+      />
+    <file source=''
+      destination='${PLASTER_PARAM_ModuleName}\Private'
+      />
+    <templateFile source='src\template.psm1'
+      destination='${PLASTER_PARAM_ModuleName}\${PLASTER_PARAM_ModuleName}.psm1'
+      />
+    <newModuleManifest destination='${PLASTER_PARAM_ModuleName}\${PLASTER_PARAM_ModuleName}.psd1' 
+      moduleVersion='$PLASTER_PARAM_Version' 
+      rootModule='${PLASTER_PARAM_ModuleName}.psm1' 
+      author='$PLASTER_PARAM_FullName' 
+      description='$PLASTER_PARAM_ModuleDesc' 
+      encoding='UTF8-NoBOM' />
+  </content>
+</plasterManifest>
